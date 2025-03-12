@@ -57,7 +57,7 @@ class GemmaClient:
         
         # Initialize with Google GenAI SDK
         # Use the same model for both text and vision capabilities
-        self.model_name = "gemma3-27b-it"
+        self.model_name = "models/gemma-3-27b-it"
         
         self.model = genai.GenerativeModel(model_name=self.model_name)
         self.chat_session = self.model.start_chat(history=[])

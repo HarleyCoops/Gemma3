@@ -126,7 +126,7 @@ class GemmaAPI:
         Returns:
             The model's response.
         """
-        # Note: gemma3-27b-it supports both text and vision capabilities
+        # Note: models/gemma-3-27b-it supports both text and vision capabilities
         
         try:
             # Load and prepare the image
@@ -159,7 +159,7 @@ class GemmaAPI:
         Returns:
             The model's response.
         """
-        # Note: gemma3-27b-it supports both text and vision capabilities
+        # Note: models/gemma-3-27b-it supports both text and vision capabilities
         
         try:
             # Decode the base64 image

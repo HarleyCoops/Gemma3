@@ -37,7 +37,7 @@ os.environ["XLA_PYTHON_CLIENT_MEM_FRACTION"] = "1.00"
 class TopicExpert:
     """A specialized chatbot that's an expert on a specific topic."""
     
-    def __init__(self, topic, context=None, model_name="gemma3-27b-it"):
+    def __init__(self, topic, context=None, model_name="models/gemma-3-27b-it"):
         """
         Initialize the topic expert.
         
@@ -50,22 +50,35 @@ class TopicExpert:
         self.context = context
         self.model_name = model_name
         
-        # Initialize the model
-        self.model = genai.GenerativeModel(model_name=model_name)
+        try:
+            self.model = genai.GenerativeModel(model_name=model_name)
+            self.chat_session = self.model.start_chat(history=[])
+            self._setup_expert_role()
+        except Exception as e:
+            print(f"Error setting up expert role: {str(e)}")
         
-        # Create system prompt
-        system_prompt = f"You are an expert on {topic}."
-        if context:
-            system_prompt += f" Here's some specialized knowledge you have: {context}"
+        # For local execution (commented out)
+        """
+        if "vision" in model_name:
+            self.local_model = gm.nn.Gemma3Vision_4B()
+            self.local_params = gm.ckpts.load_params(gm.ckpts.CheckpointPath.GEMMA3VISION_4B_IT)
+        else:
+            self.local_model = gm.nn.Gemma3_4B()
+            self.local_params = gm.ckpts.load_params(gm.ckpts.CheckpointPath.GEMMA3_4B_IT)
         
-        # Initialize chat session with system prompt
-        self.chat = self.model.start_chat(history=[])
-        self._send_system_prompt(system_prompt)
+        self.tokenizer = gm.Tokenizer()
+        self.chat_sampler = gm.text.ChatSampler(
+            model=self.local_model,
+            params=self.local_params,
+            tokenizer=self.tokenizer,
+            multi_turn=True
+        )
+        """
     
-    def _send_system_prompt(self, system_prompt):
+    def _setup_expert_role(self):
         """Send a system prompt to set up the expert's role."""
         try:
-            self.chat.send_message(f"I want you to act as an expert on {self.topic}. " + 
+            self.chat_session.send_message(f"I want you to act as an expert on {self.topic}. " + 
                                   f"Please respond to all questions as if you are a leading authority on this subject. " +
                                   f"Keep your answers focused on {self.topic}.")
         except Exception as e:
@@ -82,18 +95,18 @@ class TopicExpert:
             The expert's response.
         """
         try:
-            response = self.chat.send_message(question)
+            response = self.chat_session.send_message(question)
             return response.text
         except Exception as e:
             return f"Error: {str(e)}"
     
     def reset(self):
         """Reset the conversation while maintaining the expert role."""
-        self.chat = self.model.start_chat(history=[])
+        self.chat_session = self.model.start_chat(history=[])
         system_prompt = f"You are an expert on {self.topic}."
         if self.context:
             system_prompt += f" Here's some specialized knowledge you have: {self.context}"
-        self._send_system_prompt(system_prompt)
+        self._setup_expert_role()
 
 
 def create_expert_from_file(topic, knowledge_file):
@@ -152,8 +165,8 @@ def main():
                         help="The topic the expert specializes in")
     parser.add_argument("--knowledge", type=str, 
                         help="Path to a text file containing specialized knowledge")
-    parser.add_argument("--model", type=str, default="gemma3-27b-it",
-                        help="Model name to use (default: gemma3-27b-it)")
+    parser.add_argument("--model", type=str, default="models/gemma-3-27b-it",
+                        help="Model name to use (default: models/gemma-3-27b-it)")
     
     args = parser.parse_args()
     
