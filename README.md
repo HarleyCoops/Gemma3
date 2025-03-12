@@ -12,6 +12,19 @@ Choose the approach that best fits your needs:
 
 This guide provides comprehensive documentation for using Google's Gemma 3 models for text generation and multimodal tasks. Gemma 3 offers powerful language modeling capabilities with both text-only and multimodal versions.
 
+### Key Features of Gemma 3
+
+- **128K Token Context Window**: 16x larger than previous Gemma models, allowing processing of multiple articles or hundreds of images in a single prompt
+- **Multimodal Capabilities**: Handle both image and text input for complex analysis and generation tasks (except 1B model which is text-only)
+- **Wide Language Support**: Built-in support for over 140 languages
+- **Multiple Model Sizes**: Available in 4 parameter sizes (1B, 4B, 12B, 27B) with 5 precision levels to fit your computational resources
+
+You can download Gemma 3 models from:
+- [Kaggle](https://www.kaggle.com/models?query=gemma3&publisher=google)
+- [Hugging Face](https://huggingface.co/collections/google/gemma-3-release-67c6c6f89c4f76621268bb6d)
+
+For technical details, see the [Model Card](https://ai.google.dev/gemma/docs/core/model_card_3) and [Technical Report](https://goo.gle/Gemma3Report).
+
 ## Installation
 
 ### For Local JAX Setup
@@ -128,7 +141,7 @@ response = sampler.sample(
 
 ## Multimodal Capabilities
 
-Gemma 3 supports multimodal inputs combining text and images.
+Gemma 3 supports multimodal inputs combining text and images. **Note**: The 1B model is text-only and does not support image input.
 
 ### Loading a Multimodal Model
 
@@ -161,12 +174,28 @@ response = mm_sampler.send_message("Describe this image.", images=[image])
 print(response)
 ```
 
+## Model Sizes and Memory Requirements
+
+Gemma 3 models are available in 4 parameter sizes with 5 precision levels:
+
+| **Parameters** | **Full 32bit** | **BF16 (16-bit)** | **SFP8 (8-bit)** | **Q4_0 (4-bit)** | **INT4 (4-bit)** |
+| --- | --- | --- | --- | --- | --- |
+| Gemma 3 1B (text only) | 4 GB | 1.5 GB | 1.1 GB | 892 MB | 861 MB |
+| Gemma 3 4B | 16 GB | 6.4 GB | 4.4 GB | 3.4 GB | 3.2 GB |
+| Gemma 3 12B | 48 GB | 20 GB | 12.2 GB | 8.7 GB | 8.2 GB |
+| Gemma 3 27B | 108 GB | 46.4 GB | 29.1 GB | 21 GB | 19.9 GB |
+
+Note: These estimates do not include additional memory required for prompt tokens or supporting software. Memory consumption increases based on the total number of tokens in your prompt.
+
 ## Best Practices
 
 1. **Memory Management**: Set `XLA_PYTHON_CLIENT_MEM_FRACTION` to control GPU memory allocation.
 2. **Conversation Context**: Use `multi_turn=True` with ChatSampler to maintain context across turns.
 3. **Response Variety**: Adjust temperature in RandomSampling for more diverse responses.
 4. **Prompt Engineering**: Format prompts correctly with special tokens when using lower-level APIs.
+5. **Model Selection**: Choose the appropriate model size and precision level based on your hardware capabilities and task requirements.
+6. **Context Window**: Leverage the 128K token context window for processing large documents or multiple images.
+7. **Language Support**: Utilize the multilingual capabilities with over 140 supported languages.
 
 ## Examples
 
@@ -207,8 +236,12 @@ print(mm_sampler.send_message("What emotions does this scene evoke?"))
 ## Resources
 
 - [Gemma Official Documentation](https://ai.google.dev/gemma)
+- [Gemma 3 Model Card](https://ai.google.dev/gemma/docs/core/model_card_3)
+- [Gemma 3 Technical Report](https://goo.gle/Gemma3Report)
 - [JAX Documentation](https://jax.readthedocs.io/)
 - [TensorFlow Datasets](https://www.tensorflow.org/datasets)
+- [Kaggle Models](https://www.kaggle.com/models?query=gemma3&publisher=google)
+- [Hugging Face Models](https://huggingface.co/collections/google/gemma-3-release-67c6c6f89c4f76621268bb6d)
 
 ## Available Scripts
 
