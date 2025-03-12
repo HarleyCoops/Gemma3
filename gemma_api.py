@@ -35,13 +35,13 @@ os.environ["XLA_PYTHON_CLIENT_MEM_FRACTION"] = "1.00"
 class GemmaAPI:
     """Class for interacting with Gemma 3 models via Google GenAI SDK."""
     
-    def __init__(self, model_name="gemma3-27b-it"):
+    def __init__(self, model_name="models/gemma-3-27b-it"):
         """
         Initialize the Gemma API client.
         
         Args:
             model_name: The model to use. Options include:
-                - "gemma3-27b-it" (instruction-tuned, supports both text and vision)
+                - "models/gemma-3-27b-it" (instruction-tuned, supports both text and vision)
         """
         self.model_name = model_name
         self.model = genai.GenerativeModel(model_name=model_name)
@@ -177,7 +177,7 @@ def text_generation_demo():
     """Demonstrate text generation capabilities."""
     print("\n=== Text Generation Demo ===")
     
-    gemma = GemmaAPI(model_name="gemma3-27b-it")
+    gemma = GemmaAPI(model_name="models/gemma-3-27b-it")
     
     prompts = [
         "Explain quantum computing in simple terms.",
@@ -198,7 +198,7 @@ def chat_demo():
     """Demonstrate multi-turn chat capabilities."""
     print("\n=== Multi-turn Chat Demo ===")
     
-    gemma = GemmaAPI(model_name="gemma3-27b-it")
+    gemma = GemmaAPI(model_name="models/gemma-3-27b-it")
     
     conversation = [
         "Tell me about the solar system.",
@@ -238,7 +238,7 @@ def multimodal_demo(image_folder="./images"):
         print(f"No images found in {image_folder}. Please add some images and run again.")
         return
     
-    gemma = GemmaAPI(model_name="gemma3-27b-it")
+    gemma = GemmaAPI(model_name="models/gemma-3-27b-it")
     
     for image_file in images[:3]:  # Process up to 3 images
         image_path = os.path.join(image_folder, image_file)
