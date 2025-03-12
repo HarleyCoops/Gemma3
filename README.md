@@ -1,12 +1,27 @@
 # Gemma 3 Guide
 
 ## Overview
+This project provides two ways to interact with Gemma 3 models:
+
+1. **Local JAX Setup**: Run Gemma 3 models locally using JAX for high-performance machine learning
+2. **Google API Integration**: Access Gemma 3 through Google's API service for cloud-based inference
+
+Choose the approach that best fits your needs:
+- **Local Setup**: Better for offline use, full control, and custom modifications
+- **API Integration**: Easier to get started, no GPU required, and managed by Google
+
 This guide provides comprehensive documentation for using Google's Gemma 3 models for text generation and multimodal tasks. Gemma 3 offers powerful language modeling capabilities with both text-only and multimodal versions.
 
 ## Installation
 
+### For Local JAX Setup
 ```bash
 pip install -q gemma
+```
+
+### For Google API Integration
+```bash
+pip install -r requirements.txt
 ```
 
 ## Environment Setup
@@ -197,63 +212,56 @@ print(mm_sampler.send_message("What emotions does this scene evoke?"))
 
 ## Available Scripts
 
-This project includes several Python scripts for different functionalities:
+This project includes several Python scripts supporting both local and API-based implementations:
 
-### Core Scripts
-- `text_generation.py`: Basic text generation functionality using Gemma 3 models
-- `multimodal_vision.py`: Handles multimodal (text + image) processing with Gemma 3 Vision
-- `ai_assistant.py`: Implements an AI assistant interface using Gemma 3
-- `gemma_api.py`: Provides a RESTful API interface for Gemma 3 functionality
+### Google API Scripts
+- `gemma_api.py`: RESTful API interface using Google's Gemma API
+- `gemma_web_app.py`: Advanced web application with Google API integration
+- `web_interface.py`: Basic web interface using Google's API
+- `topic_expert.py`: Specialized topic-based interactions via API
 
-### Web Interfaces
-- `web_interface.py`: Basic web interface for interacting with Gemma 3
-- `gemma_web_app.py`: Advanced web application with extended features
-- `topic_expert.py`: Specialized script for topic-based interactions
+### Local JAX Implementation Scripts
+- `text_generation.py`: Local text generation using JAX-based Gemma models
+- `multimodal_vision.py`: Local multimodal processing with Gemma Vision
+- `ai_assistant.py`: Local AI assistant implementation
 
 ### Configuration Files
 - `.env`: Environment configuration file (create from sample.env)
-- `sample.env`: Template for environment variables
+- `sample.env`: Template for environment variables (includes both API keys and local settings)
 - `requirements.txt`: Core project dependencies
 - `requirements_new.txt`: Updated/alternative dependencies
 
 ## Running the Scripts
 
-### Text Generation
+### Google API-Based Scripts
+These scripts require a Google API key in your `.env` file:
 ```bash
-python text_generation.py
+python gemma_api.py        # Run the API server
+python gemma_web_app.py    # Run the advanced web interface
+python web_interface.py    # Run the basic web interface
+python topic_expert.py     # Run the topic expert system
 ```
 
-### Web Interface
+### Local JAX-Based Scripts
+These scripts require GPU setup and local model weights:
 ```bash
-python web_interface.py
+python text_generation.py     # Run local text generation
+python multimodal_vision.py   # Run local multimodal processing
+python ai_assistant.py        # Run local AI assistant
 ```
 
-### API Server
-```bash
-python gemma_api.py
-```
+## Setup Requirements
 
-### Advanced Web Application
-```bash
-python gemma_web_app.py
-```
+### For Google API Usage
+1. Install dependencies: `pip install -r requirements.txt`
+2. Copy `sample.env` to `.env` and add your Google API key
+3. No GPU required
 
-### Multimodal Processing
-```bash
-python multimodal_vision.py
-```
-
-### AI Assistant
-```bash
-python ai_assistant.py
-```
-
-### Topic Expert
-```bash
-python topic_expert.py
-```
+### For Local JAX Setup
+1. Install JAX dependencies: `pip install -q gemma`
+2. Set up GPU environment as described in the Environment Setup section
+3. Configure GPU memory allocation
+4. Download model weights locally
 
 Make sure to:
-1. Install the required dependencies: `pip install -r requirements.txt`
-2. Copy `sample.env` to `.env` and configure your environment variables
-3. Set up your GPU environment as described in the Environment Setup section
+1. Install the required dependencies: `

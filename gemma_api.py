@@ -35,16 +35,13 @@ os.environ["XLA_PYTHON_CLIENT_MEM_FRACTION"] = "1.00"
 class GemmaAPI:
     """Class for interacting with Gemma 3 models via Google GenAI SDK."""
     
-    def __init__(self, model_name="gemma-3-8b-it"):
+    def __init__(self, model_name="gemma3-27b-it"):
         """
         Initialize the Gemma API client.
         
         Args:
             model_name: The model to use. Options include:
-                - "gemma-3-8b-it" (instruction-tuned)
-                - "gemma-3-8b" (base model)
-                - "gemma-3-27b-it" (larger instruction-tuned)
-                - "gemma-3-vision-it" (multimodal model)
+                - "gemma3-27b-it" (instruction-tuned, supports both text and vision)
         """
         self.model_name = model_name
         self.model = genai.GenerativeModel(model_name=model_name)
@@ -129,8 +126,7 @@ class GemmaAPI:
         Returns:
             The model's response.
         """
-        if "vision" not in self.model_name:
-            return "Error: You need to use a vision model (e.g., 'gemma-3-vision-it') for image processing."
+        # Note: gemma3-27b-it supports both text and vision capabilities
         
         try:
             # Load and prepare the image
@@ -163,8 +159,7 @@ class GemmaAPI:
         Returns:
             The model's response.
         """
-        if "vision" not in self.model_name:
-            return "Error: You need to use a vision model (e.g., 'gemma-3-vision-it') for image processing."
+        # Note: gemma3-27b-it supports both text and vision capabilities
         
         try:
             # Decode the base64 image
@@ -182,7 +177,7 @@ def text_generation_demo():
     """Demonstrate text generation capabilities."""
     print("\n=== Text Generation Demo ===")
     
-    gemma = GemmaAPI(model_name="gemma-3-8b-it")
+    gemma = GemmaAPI(model_name="gemma3-27b-it")
     
     prompts = [
         "Explain quantum computing in simple terms.",
@@ -203,7 +198,7 @@ def chat_demo():
     """Demonstrate multi-turn chat capabilities."""
     print("\n=== Multi-turn Chat Demo ===")
     
-    gemma = GemmaAPI(model_name="gemma-3-8b-it")
+    gemma = GemmaAPI(model_name="gemma3-27b-it")
     
     conversation = [
         "Tell me about the solar system.",
@@ -243,7 +238,7 @@ def multimodal_demo(image_folder="./images"):
         print(f"No images found in {image_folder}. Please add some images and run again.")
         return
     
-    gemma = GemmaAPI(model_name="gemma-3-vision-it")
+    gemma = GemmaAPI(model_name="gemma3-27b-it")
     
     for image_file in images[:3]:  # Process up to 3 images
         image_path = os.path.join(image_folder, image_file)

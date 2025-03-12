@@ -37,7 +37,7 @@ os.environ["XLA_PYTHON_CLIENT_MEM_FRACTION"] = "1.00"
 class TopicExpert:
     """A specialized chatbot that's an expert on a specific topic."""
     
-    def __init__(self, topic, context=None, model_name="gemma-3-8b-it"):
+    def __init__(self, topic, context=None, model_name="gemma3-27b-it"):
         """
         Initialize the topic expert.
         
@@ -152,8 +152,8 @@ def main():
                         help="The topic the expert specializes in")
     parser.add_argument("--knowledge", type=str, 
                         help="Path to a text file containing specialized knowledge")
-    parser.add_argument("--model", type=str, default="gemma-3-8b-it",
-                        help="Model name to use (default: gemma-3-8b-it)")
+    parser.add_argument("--model", type=str, default="gemma3-27b-it",
+                        help="Model name to use (default: gemma3-27b-it)")
     
     args = parser.parse_args()
     
